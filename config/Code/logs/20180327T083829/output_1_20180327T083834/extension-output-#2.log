@@ -1,0 +1,23 @@
+
+Linter 'pylint' is not installed. Please install it or select another linter".
+Error: Module 'pylint' not installed.
+##########Linting Output - pylint##########
+No config file found, using default configuration
+************* Module Player
+129,20,error,E1102:self.playingCallback is not callable
+141,16,error,E1102:self.endCallback is not callable
+186,12,error,E1102:self.endCallback is not callable
+
+-----------------------------------
+Your code has been rated at 8.65/10
+
+##########Linting Output - pylint##########
+No config file found, using default configuration
+************* Module Player
+129,20,error,E1102:self.playingCallback is not callable
+141,16,error,E1102:self.endCallback is not callable
+186,12,error,E1102:self.endCallback is not callable
+
+------------------------------------------------------------------
+Your code has been rated at 8.65/10 (previous run: 8.65/10, +0.00)
+

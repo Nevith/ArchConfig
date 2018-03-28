@@ -1,0 +1,24 @@
+Looking for git in: git
+Using git 2.16.2 from git
+> git rev-parse --show-toplevel
+> git config --get commit.template
+Open repository: /home/andraz/FERI_SEM4
+> git status -z -u
+> git symbolic-ref --short HEAD
+> git rev-parse master
+> git rev-parse --symbolic-full-name --abbrev-ref master@{u}
+> git rev-list --left-right master...origin/master
+> git for-each-ref --format %(refname) %(objectname) --sort -committerdate
+> git remote --verbose
+> git show :PV/1/mat.clojure
+> git check-ignore -z --stdin
+> git check-ignore -z --stdin
+> git check-ignore -z --stdin
+> git check-ignore -z --stdin
+> git show :SIS/1/playMusic.py
+> git check-ignore -z --stdin
+> git show :SIS/2/Player.py
+> git ls-tree -l HEAD -- /home/andraz/FERI_SEM4/SIS/2/Player.py
+> git show f8feacaff72df1508dd76bb7aca40bb39c92d6ae
+> git show HEAD:SIS/2/Player.py
+> git show :SIS/2/Player.py

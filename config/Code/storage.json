@@ -21,6 +21,11 @@
             "label": "Ctrl+Shift+T",
             "isNative": true
         },
+        "workbench.action.openRecent": {
+            "id": "workbench.action.openRecent",
+            "label": "Ctrl+R",
+            "isNative": true
+        },
         "workbench.action.files.save": {
             "id": "workbench.action.files.save",
             "label": "Ctrl+S",
@@ -128,8 +133,8 @@
         },
         "editor.action.commentLine": {
             "id": "editor.action.commentLine",
-            "label": "Ctrl+/",
-            "isNative": false
+            "label": "Ctrl+Shift+7",
+            "isNative": true
         },
         "editor.action.blockComment": {
             "id": "editor.action.blockComment",
@@ -231,11 +236,6 @@
             "label": "Ctrl+Shift+Y",
             "isNative": true
         },
-        "workbench.action.terminal.toggleTerminal": {
-            "id": "workbench.action.terminal.toggleTerminal",
-            "label": "Ctrl+`",
-            "isNative": false
-        },
         "workbench.actions.view.problems": {
             "id": "workbench.actions.view.problems",
             "label": "Ctrl+Shift+M",
@@ -254,11 +254,6 @@
         "workbench.action.toggleZenMode": {
             "id": "workbench.action.toggleZenMode",
             "label": "Ctrl+K Z",
-            "isNative": false
-        },
-        "workbench.action.splitEditor": {
-            "id": "workbench.action.splitEditor",
-            "label": "Ctrl+\\",
             "isNative": false
         },
         "workbench.action.toggleEditorGroupLayout": {
@@ -283,8 +278,8 @@
         },
         "workbench.action.zoomIn": {
             "id": "workbench.action.zoomIn",
-            "label": "Ctrl+=",
-            "isNative": false
+            "label": "Ctrl+Shift+0",
+            "isNative": true
         },
         "workbench.action.zoomOut": {
             "id": "workbench.action.zoomOut",
@@ -442,7 +437,8 @@
     "windowsState": {
         "openedWindows": [],
         "lastActiveWindow": {
-            "backupPath": "/home/andraz/.config/Code/Backups/1521898944205",
+            "folderPath": "/home/andraz/FERI_SEM4",
+            "backupPath": "/home/andraz/.config/Code/Backups/04143a133fa563d498f20d35a21643a7",
             "uiState": {
                 "mode": 1,
                 "x": 5,
@@ -451,5 +447,12 @@
                 "height": 700
             }
         }
+    },
+    "pickerWorkingDir": "/home/andraz",
+    "openedPathsList": {
+        "workspaces": [
+            "/home/andraz/FERI_SEM4"
+        ],
+        "files": []
     }
 }
