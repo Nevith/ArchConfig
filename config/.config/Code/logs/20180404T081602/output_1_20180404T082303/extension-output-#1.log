@@ -1,0 +1,64 @@
+Looking for git in: git
+Using git 2.16.3 from git
+> git rev-parse --show-toplevel
+> git config --get commit.template
+Open repository: /home/andraz/FERI_SEM4
+> git status -z -u
+> git symbolic-ref --short HEAD
+> git rev-parse master
+> git rev-parse --symbolic-full-name --abbrev-ref master@{u}
+> git rev-list --left-right master...origin/master
+> git for-each-ref --format %(refname) %(objectname) --sort -committerdate
+> git remote --verbose
+> git show :SPO/3/1/finfo.c
+> git show :SPO/2/1/navodila_E1093818.tex
+> git show :SPO/2/2/navodila_E1093818.tex
+> git show :SPO/3/1/finfo.c
+> git check-ignore -z --stdin
+> git check-ignore -z --stdin
+> git check-ignore -z --stdin
+> git show :SPO/3/2/myPhoneDB.c
+> git show :SPO/3/2/myPhoneDB.c
+> git show :SPO/2/2/navodila_E1093818.tex
+> git show :SPO/2/1/navodila_E1093818.tex
+> git show :SPO/2/1/navodila_E1093818.tex
+> git show :SPO/3/1/finfo.c
+> git show :SPO/3/2/myPhoneDB.c
+> git show :SPO/2/2/navodila_E1093818.tex
+> git show :SPO/3/1/finfo.c
+> git show :SPO/3/2/myPhoneDB.c
+> git show :SPO/3/1/finfo.c
+> git check-ignore -z --stdin
+> git check-ignore -z --stdin
+> git check-ignore -z --stdin
+> git show :SPO/4/1/ugani.c
+> git show :SPO/4/1/ugani.c
+> git check-ignore -z --stdin
+> git check-ignore -z --stdin
+> git show :SPO/4/2/mget.c
+> git show :SPO/4/2/msend.c
+> git show :SPO/4/1/ugani.c
+> git show :SPO/4/2/msend.c
+> git show :SPO/4/2/msend.c
+> git show :SPO/4/2/mget.c
+> git show :SPO/3/1/finfo.c
+> git status -z -u
+> git symbolic-ref --short HEAD
+> git rev-parse master
+> git rev-parse --symbolic-full-name --abbrev-ref master@{u}
+> git rev-list --left-right master...origin/master
+> git for-each-ref --format %(refname) %(objectname) --sort -committerdate
+> git remote --verbose
+> git status -z -u
+> git symbolic-ref --short HEAD
+> git rev-parse master
+> git rev-parse --symbolic-full-name --abbrev-ref master@{u}
+> git rev-list --left-right master...origin/master
+> git for-each-ref --format %(refname) %(objectname) --sort -committerdate
+> git remote --verbose
+> git show :SPO/2/1/navodila_E1093818.tex
+> git show :SPO/2/2/navodila_E1093818.tex
+> git show :SPO/3/1/finfo.c
+> git show :SPO/3/2/myPhoneDB.c
+> git show :SPO/2/1/navodila_E1093818.tex
+> git show :SPO/2/2/navodila_E1093818.tex

@@ -1,0 +1,14 @@
+[2018-04-15 13:18:00.741] [exthost1] [info] extension host started
+[2018-04-15 13:18:00.770] [exthost1] [info] ExtensionService#_doActivateExtension vscode.emmet {"startup":true,"activationEvent":"*"}
+[2018-04-15 13:18:00.770] [exthost1] [info] ExtensionService#loadCommonJSModule /opt/visual-studio-code/resources/app/extensions/emmet/out/extension
+[2018-04-15 13:18:00.849] [exthost1] [info] ExtensionService#_doActivateExtension vscode.git {"startup":true,"activationEvent":"*"}
+[2018-04-15 13:18:00.849] [exthost1] [info] ExtensionService#loadCommonJSModule /opt/visual-studio-code/resources/app/extensions/git/out/main
+[2018-04-15 13:18:00.972] [exthost1] [info] ExtensionService#_doActivateExtension vscode.merge-conflict {"startup":true,"activationEvent":"*"}
+[2018-04-15 13:18:00.972] [exthost1] [info] ExtensionService#loadCommonJSModule /opt/visual-studio-code/resources/app/extensions/merge-conflict/out/extension
+[2018-04-15 13:18:00.988] [exthost1] [info] eager extensions activated
+[2018-04-15 13:23:42.582] [exthost1] [info] ExtensionService#_doActivateExtension ms-vscode.cpptools {"startup":false,"activationEvent":"onLanguage:cpp"}
+[2018-04-15 13:23:42.582] [exthost1] [info] ExtensionService#loadCommonJSModule /home/andraz/.vscode/extensions/ms-vscode.cpptools-0.16.1/out/src/main
+[2018-04-15 13:25:07.366] [exthost1] [info] ExtensionService#_doActivateExtension vscode.python {"startup":false,"activationEvent":"onLanguage:python"}
+[2018-04-15 13:25:07.366] [exthost1] [info] ExtensionService#loadCommonJSModule /opt/visual-studio-code/resources/app/extensions/python/out/pythonMain
+[2018-04-15 13:25:07.372] [exthost1] [info] ExtensionService#_doActivateExtension ms-python.python {"startup":false,"activationEvent":"onLanguage:python"}
+[2018-04-15 13:25:07.373] [exthost1] [info] ExtensionService#loadCommonJSModule /home/andraz/.vscode/extensions/ms-python.python-2018.3.1/out/client/extension

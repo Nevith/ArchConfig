@@ -1,0 +1,507 @@
+file:///home/andraz/FERI_SEM4/UVRG/V2_Calculator.py
+import math
+
+import numpy as np
+from Canvas import Canvas
+from PyQt5.QtGui import QIntValidator
+from PyQt5.QtWidgets import QWidget, QGridLayout, QComboBox, QLineEdit, QFormLayout, QPushButton, QScrollArea
+import time
+
+
+class V2_Calculator(QWidget):
+
+    # Inits basic variables
+    def __init__(self, parent):
+        super().__init__()
+
+        self.parent = parent
+
+        self.maxXValue = 800.0000
+        self.maxYValue = 600.0000
+
+        # Data variables
+        self.pointStyles = ["ro", "go", "bo", "yo"]
+        self.lineStyles = ["r-", "g-", "b-", "y-"]
+        self.points = []
+        self.field = QLineEdit()
+        self.hasCalculated = False
+        self.distribution = "Nothing"
+        # Define canvas
+        self.canvas = Canvas(self.maxXValue, self.maxYValue)
+
+        self.initUI()
+
+
+    def initUI(self):
+        self.mainUIGrid = QGridLayout()
+        self.setLayout(self.mainUIGrid)
+
+        # Define option
+        optionsGrid = QGridLayout()
+
+        self.pointGenerationDropDown = QComboBox()
+        self.pointGenerationDropDown.addItem("Evenly distributed")
+        self.pointGenerationDropDown.addItem("Gaussian distributed")
+        optionsGrid.addWidget(self.pointGenerationDropDown, 0, 0, 1, 1)
+
+        self.generateButton = QPushButton("Generate")
+        self.generateButton.clicked.connect(self.generatePoints)
+        optionsGrid.addWidget(self.generateButton, 0, 1, 1, 1)
+
+        self.algorithmDropDown = QComboBox()
+        self.algorithmDropDown.addItem("Jarvis's march")
+        self.algorithmDropDown.addItem("Graham's scan")
+        self.algorithmDropDown.addItem("Quick Hull")
+        optionsGrid.addWidget(self.algorithmDropDown, 0, 2, 1, 1)
+
+        self.resetButton = QPushButton("Reset")
+        self.resetButton.clicked.connect(self.reset)
+        optionsGrid.addWidget(self.resetButton, 0, 4, 1, 1)
+
+        self.calcButton = QPushButton("Calculate")
+        self.calcButton.clicked.connect(self.calculate)
+        self.calcButton.setEnabled(False)
+        optionsGrid.addWidget(self.calcButton, 0, 3, 1, 1)
+
+        # Add field
+        # Define int input field
+        self.field.setValidator(QIntValidator(0, 1000000))
+        self.field.setText("100000")
+        flo = QFormLayout()
+        flo.addRow("Number of points: ", self.field)
+        optionsGrid.addLayout(flo, 1, 0, 1, 5)
+
+        # Add options to layout
+        self.mainUIGrid.addLayout(optionsGrid, 0, 0)
+
+        # Add to canvas to scroll area and add to grid
+        scroll = QScrollArea()
+        scroll.setWidgetResizable(True)
+        scroll.setWidget(self.canvas)
+        self.mainUIGrid.addWidget(scroll, 1, 0)
+
+        # Add grid as widget layout and specify row height relationships
+        self.setLayout(self.mainUIGrid)
+        self.mainUIGrid.setRowStretch(0, 1)
+        self.mainUIGrid.setRowStretch(1, 20)
+
+    def reset(self):
+        # Reset points
+        self.points = []
+
+        self.distribution = "Nothing"
+
+        # Clean canvas
+        self.canvas.reset()
+        self.canvas.fig.canvas.draw()
+
+        # Reset has calculated status
+        self.hasCalculated = False
+        # Re enable UI
+        self.calcButton.setEnabled(False)
+
+        self.parent.printResult("")
+
+    def drawToCanvas(self, X, Y, style, label="", markersize=2, legend=False):
+        self.canvas.axes.plot(X, Y, style, label=label, markersize=markersize)
+        if legend:
+            self.canvas.axes.legend()
+        self.canvas.fig.canvas.draw()
+
+    def generatePoints(self):
+        self.reset()
+        self.distribution = self.pointGenerationDropDown.currentText()
+        # Generate N points according to the generation given
+        gen = self.pointGenerationDropDown.currentIndex()   # 0 is Uniform | 1 is Normal
+        N = int(self.field.text())
+        if N <= 0:
+            return
+
+        self.calcButton.setEnabled(True)
+
+        padding = 5
+
+        self.points = np.array([np.random.uniform(padding, self.maxXValue-padding, N) if gen == 0 else np.random.normal(
+                                                                                                    self.maxXValue/2,
+                                                                                                    self.maxXValue/10, N),
+                np.random.uniform(padding, self.maxYValue-padding, N) if gen == 0 else np.random.normal(
+                                                                                                self.maxYValue/2,
+                                                                                                self.maxYValue/10, N)])
+
+        if gen != 0:
+            # Cut random numbers so all are in window 100% of the time
+            np.clip(self.points[0], padding, self.maxXValue-padding, out=self.points[0])
+            np.clip(self.points[1], padding, self.maxYValue-padding, out=self.points[1])
+
+
+        m=1
+        if len(self.points[0]) < 500:
+            m=2
+
+        self.drawToCanvas(self.points[0], self.points[1], self.pointStyles[0], markersize=m, label="Point", legend=True)
+
+
+    def calculate(self):
+        self.calcButton.setEnabled(False)
+        self.hasCalculated = True
+
+        # Get the requested algorithm
+        # 0 = Jarvis's march
+        # 1 = Graham's scan
+        # 2 = QuickHull
+        mode = self.algorithmDropDown.currentIndex()
+
+        # Jarvis's march
+        if mode == 0:
+            # Start timing
+            self.timeStart = time.process_time()
+
+            # Choose initial point
+            minimumYs = np.argmin(self.points[1])
+            E = np.min(minimumYs)
+            shell = [E]
+            nextPoint = E
+
+
+            while True:
+                # Calculate angles between points
+                angles = []
+
+                # Compute the next virtual x axis
+                if nextPoint != E:
+                    next = self.getNextPoint([self.points[0][nextPoint], self.points[1][nextPoint]],
+                                              [self.points[0][shell[len(shell) - 2]],
+                                               self.points[1][shell[len(shell) - 2]]])
+                else:
+                    next = [self.points[0][nextPoint] + 10, self.points[1][nextPoint]]
+
+                for i in range(0, len(self.points[0])):
+                    if i not in shell or i == E and E != nextPoint:
+                        # Get angle between nextPoint and i
+                        angles.append(self.getCCAngle([[self.points[0][nextPoint], self.points[1][nextPoint]], next],
+                                                      [[self.points[0][nextPoint], self.points[1][nextPoint]], [self.points[0][i], self.points[1][i]]]))
+                    # If i already in result ignore
+                    else:
+                        angles.append(360)
+
+                minimumAngles = np.argmin(angles)
+                # Find index of point with smallest angle that is nearest to nextPoint
+                if isinstance(minimumAngles, type(np.array([]))):
+                    minimumAngle = minimumAngles[0]
+                    for i in range(1, len(minimumAngles)):
+                        if self.getDistance([self.points[0][minimumAngle], self.points[1][minimumAngle]],
+                                            [self.points[0][nextPoint], self.points[1][nextPoint]]) > self.getDistance(
+                                                                                      [self.points[0][minimumAngles[i]],
+                                                                                       self.points[1][minimumAngles[i]]],
+                                                                                      [self.points[0][nextPoint],
+                                                                                       self.points[1][nextPoint]]):
+                            minimumAngle = i
+
+                    nextPoint = minimumAngle
+
+                else:
+                    nextPoint = minimumAngles
+
+                # If we have come full circle we have found the convex shell
+                if nextPoint == E:
+                    shell.append(E)
+                    break
+                # Else append point to result
+                else:
+                    shell.append(nextPoint)
+
+            # Stop timing
+            self.timeStop = time.process_time()
+            # Write result (N of points, Generation, Algorithm, Time)
+            self.writeResult()
+
+            self.drawToCanvas(self.points[0][E], self.points[1][E], self.pointStyles[1],
+                              label="Initial Point", legend=True, markersize=3)
+
+            self.drawToCanvas(np.take(self.points[0], shell), np.take(self.points[1], shell), self.lineStyles[2],
+                              label="Convex Shell", legend=True, markersize=1)
+
+        # Graham's scan
+        elif mode == 1:
+            # Start timing
+            self.timeStart = time.process_time()
+
+            if len(self.points[0]) <= 3:
+                # Stop timing
+                self.timeStop = time.process_time()
+                # Write result (N of points, Generation, Algorithm, Time)
+                self.writeResult()
+
+                # Draw graph
+                x = np.append(self.points[0], self.points[0][0])
+                y = np.append(self.points[1], self.points[1][0])
+                self.drawToCanvas(x, y, self.lineStyles[2], label="Convex Shell", legend=True, markersize=1)
+                return
+
+            # Pick initial point O
+            #   Pick 3 random points
+            rand = np.random.randint(0, len(self.points[0])-3, 1)
+            randI = [rand[0], rand[0]+1, rand[0]+2]  # Male sire mp repetition
+
+            #   Get their average coordinates for O
+            Ox = 0
+            Oy = 0
+            for i in range(0, 3):
+                Ox += self.points[0][randI[i]]
+                Oy += self.points[1][randI[i]]
+            Ox = Ox/3
+            Oy = Oy/3
+            O = [Ox, Oy]
+
+            # Calculate angles between all points and O in relation to X axis
+            #   Make vector V1[O, [O[0]+n, O[1]]]
+            v1 = [O, [Ox+10, Oy]]
+            #   For all vectors [O, T element of S] calculate angle with V1 CC
+            #       If there are points with equal angles, remove the ones that are closer to O
+            angleDict = dict()
+            for i in range(0, len(self.points[0])):
+                point = [self.points[0][i], self.points[1][i]]
+                angle = self.getCCAngle(v1, [O, point])
+                if angle in angleDict:
+                    if self.getDistance(O, point) > self.getDistance(O, [self.points[0][angleDict[angle]],
+                                                                         self.points[1][angleDict[angle]]]):
+                        angleDict[angle] = i
+                else:
+                    angleDict[angle] = i
+
+            # Sort by angle
+            sortedAngles = np.sort(list(angleDict.keys()))
+
+            # Pick P0[Smallest Y coordinate]
+            minimumYs = np.argmin(self.points[1])
+            E = np.min(minimumYs)
+            start = -1
+            for i in range(0, len(sortedAngles)):
+                if E == angleDict[sortedAngles[i]]:
+                    start = i
+                    break
+
+            # Continue on from P0 and do:
+            current = start
+            back = 0
+            while True:
+                # For each iteration define Pi Pj Pk (i current iteration, j = i+1, k = j+1)
+                pi = angleDict[sortedAngles[(current  ) % len(sortedAngles)]]
+                pj = angleDict[sortedAngles[(current+1) % len(sortedAngles)]]
+                pk = angleDict[sortedAngles[(current+2) % len(sortedAngles)]]
+                #   If triangle(ijk) is orientated pos. move on
+                #   Else remove Pj from List and stay on same iteration
+                if not self.isInShell([self.points[0][pi], self.points[1][pi]],
+                                      [self.points[0][pj], self.points[1][pj]],
+                                      [self.points[0][pk], self.points[1][pk]]):
+                    # Remove from result
+                    angleDict.pop(sortedAngles[(current+1) % len(sortedAngles)])
+                    sortedAngles = np.delete(sortedAngles, (current+1) % len(sortedAngles))
+                    # Move 1 step back
+                    current -= 2
+                    back -= 2
+                    if current < 0:
+                        current = len(sortedAngles)-1
+                else:
+                    current = (current + 1) % len(sortedAngles)
+                    back += 1
+
+                # While(Pk != P0)
+                if angleDict[sortedAngles[(current+1) % len(sortedAngles)]] == E and back >= 0:
+                    break
+
+            # Stop timing
+            self.timeStop = time.process_time()
+            # Write result (N of points, Generation, Algorithm, Time)
+            self.writeResult()
+
+            shell = []
+            for i in range(0, len(sortedAngles)):
+                shell.append(angleDict[sortedAngles[i]])
+            shell.append(angleDict[sortedAngles[0]])
+
+            self.drawToCanvas(Ox, Oy, self.pointStyles[1],
+                              label="Chosen Center Point", legend=True, markersize=3)
+
+            self.drawToCanvas(self.points[0][E], self.points[1][E], self.pointStyles[3],
+                              label="Initial Point", legend=True, markersize=3)
+
+            self.drawToCanvas(np.take(self.points[0], shell),
+                              np.take(self.points[1], shell),
+                              self.lineStyles[2], label="Convex Shell", legend=True, markersize=1)
+
+
+        # QuickHull
+        elif mode == 2:
+            # Start timing
+            self.timeStart = time.process_time()
+            # Find Xm and Xm with biggest and smallest X coordinate
+            minimumXs = np.argmin(self.points[0])
+            Xm = np.min(minimumXs)
+            maxXs = np.argmax(self.points[0])
+            XM = np.min(maxXs)
+
+            # Divide points into 2, ones above the line Xm and X and ones below
+            shell = [Xm,XM]
+            s1, s2 = self.divide(range(0, len(self.points[0])), Xm, XM)
+            shell = self.quickHull(s1, Xm, XM, shell, 1)
+            shell = self.quickHull(s2, XM, Xm, shell, len(shell))
+            shell.append(shell[0])
+
+            # Stop timing
+            self.timeStop = time.process_time()
+            # Write result (N of points, Generation, Algorithm, Time)
+            self.writeResult()
+
+            self.drawToCanvas(np.take(self.points[0], shell),
+                              np.take(self.points[1], shell),
+                              self.lineStyles[2], label="Convex Shell", legend=True, markersize=1)
+
+        # Invalid input
+        else:
+            self.parent.printResult("An error has occurred")
+            return
+
+    def quickHull(self, s, xm, xM, shell, indexOfInput):
+        # If empty group return shell
+        if len(s) <= 0:
+            return shell
+        elif len(s) == 1:
+            shell.insert(indexOfInput, s[0])
+            return shell
+
+        # Foreach group of points find point E that gives triangle Xm,XM,E biggest area
+        MaxArea = self.triangleArea([self.points[0][xm],self.points[1][xm]],
+                                    [self.points[0][s[0]],self.points[1][s[0]]],
+                                    [self.points[0][xM],self.points[1][xM]])
+        indexOfMax = [0]
+        for i in range(1, len(s)):
+            area = self.triangleArea([self.points[0][xm], self.points[1][xm]],
+                                     [self.points[0][s[i]], self.points[1][s[i]]],
+                                     [self.points[0][xM], self.points[1][xM]])
+            if MaxArea < area:
+                MaxArea = area
+                indexOfMax = [i]
+            elif MaxArea == area:
+                indexOfMax.append(i)
+
+        #   if multiple E's give same area pick one with biggest angle(Xm,E,XM)
+        if len(indexOfMax) > 1:
+            maxAngle = self.getAngle([[self.points[0][s[indexOfMax[0]]], self.points[1][s[indexOfMax[0]]]], [self.points[0][xM], self.points[1][xM]]],
+                                     [[self.points[0][s[indexOfMax[0]]], self.points[1][s[indexOfMax[0]]]], [self.points[0][xm], self.points[1][xm]]])
+            E = s[indexOfMax[0]]
+            for i in range(1, len(indexOfMax)):
+                angle = self.getAngle([[self.points[0][s[indexOfMax[i]]], self.points[1][s[indexOfMax[i]]]],
+                                       [self.points[0][xM], self.points[1][xM]]],
+                                      [[self.points[0][s[indexOfMax[i]]], self.points[1][s[indexOfMax[i]]]],
+                                       [self.points[0][xm], self.points[1][xm]]])
+                if maxAngle < angle:
+                    maxAngle = angle
+                    E = s[indexOfMax[i]]
+        else:
+            E = s[indexOfMax[0]]
+
+        # Split into 2 sub groups that might be in shell [On the outside of triangle(xm, E, xM)]
+        s1 = []
+        s2 = []
+        for i in range(0, len(s)):
+            if s[i] != E:
+                if self.isInShell([self.points[0][xm], self.points[1][xm]],
+                                      [self.points[0][s[i]], self.points[1][s[i]]],
+                                      [self.points[0][E], self.points[1][E]]):
+                        s1.append(s[i])
+                if self.isInShell([self.points[0][E], self.points[1][E]],
+                                      [self.points[0][s[i]], self.points[1][s[i]]],
+                                      [self.points[0][xM], self.points[1][xM]]):
+                        s2.append(s[i])
+
+        # Get next points
+        shell = self.quickHull(s2, E, xM, shell, indexOfInput)
+        # Insert the 1 point that is 100% in shell into the shell
+        shell.insert(indexOfInput, E)
+        # Get next points
+        shell = self.quickHull(s1, xm, E, shell, indexOfInput)
+
+        return shell
+
+    def getDistance(self, p1, p2):
+        return math.pow(math.pow((p1[0] - p2[0]), 2) + math.pow((p1[1] - p2[1]), 2), 1/2)
+
+    def getCCAngle(self, v1, v2):
+        v1 = np.array(v1)
+        v2 = np.array(v2)
+
+        a = np.subtract(v1[1], v1[0])
+        b = np.subtract(v2[1], v2[0])
+
+        result = (math.degrees(math.atan2(a[0] * b[1] - a[1] * b[0], a[0] * b[0] + b[1] * a[1])))
+
+        return (result + 360) % 360
+
+    def getAngle(self, v1, v2):
+        v1 = np.array(v1)
+        v2 = np.array(v2)
+
+        a = np.subtract(v1[1], v1[0])
+        b = np.subtract(v2[1], v2[0])
+
+        s = np.dot(a, b)
+
+        cosv = s / (self.getLength(v1) * self.getLength(v2))
+
+        return math.acos(cosv)*180/math.pi
+
+    def isInShell(self, p1, p2, p3):
+        U = (p2[0] - p1[0]) * (p3[1] - p1[1]) - (p3[0] - p1[0]) * (p2[1] - p1[1])
+        return U > 0
+
+
+    def getLength(self, v):
+        return self.getDistance(v[0], v[1])
+
+    def getNextPoint(self, p1, p2):
+        # Get coefficients of the line of both vectors
+        coefficients = np.polyfit([p1[0], p2[0]], [p1[1], p2[1]], 1)
+        # Let's compute the values of the line...
+        polynomial = np.poly1d(coefficients)
+
+        if p1[0] < p2[0]:
+            result = polynomial(p1[0] - 10)
+            result = [p1[0] - 10, result]
+        else:
+            result = polynomial(p1[0] + 10)
+            result = [p1[0] + 10, result]
+
+        return result
+
+    def divide(self, points, p1, p2):
+        s1 = []
+        s2 = []
+
+        vp1 = [self.points[0][p1], self.points[1][p1]]
+        vp2 = [self.points[0][p2], self.points[1][p2]]
+
+        for point in points:
+            if point not in [p1, p2]:
+                p3 = [self.points[0][point], self.points[1][point]]
+                # Use in shell to decide if on top or bottom
+                if self.isInShell(vp1, p3, vp2):
+                    s1.append(point)
+                else:
+                    s2.append(point)
+        return [s1, s2]
+
+    def triangleArea(self, p1,p2,p3):
+        a = self.getDistance(p1,p2)
+        b = self.getDistance(p2, p3)
+        c = self.getDistance(p3, p1)
+
+        s = (a + b + c) / 2
+        return math.sqrt(s*(s - a) * (s - b) * (s - c))
+
+    def writeResult(self):
+        result = "Distributed: " + self.distribution.split(" ")[0] + "\n"
+        result += "Number of points: " + str(len(self.points[0])) + "\n"
+        result += "Algorithm: " + self.algorithmDropDown.currentText() + "\n"
+        result += "Time elapsed: " + str((self.timeStop - self.timeStart)) + "s"
+        self.parent.printResult(result)

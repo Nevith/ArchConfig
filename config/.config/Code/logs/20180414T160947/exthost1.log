@@ -1,0 +1,10 @@
+[2018-04-14 16:10:11.475] [exthost1] [info] extension host started
+[2018-04-14 16:10:11.504] [exthost1] [info] ExtensionService#_doActivateExtension vscode.emmet {"startup":true,"activationEvent":"*"}
+[2018-04-14 16:10:11.504] [exthost1] [info] ExtensionService#loadCommonJSModule /opt/visual-studio-code/resources/app/extensions/emmet/out/extension
+[2018-04-14 16:10:12.346] [exthost1] [info] ExtensionService#_doActivateExtension vscode.git {"startup":true,"activationEvent":"*"}
+[2018-04-14 16:10:12.346] [exthost1] [info] ExtensionService#loadCommonJSModule /opt/visual-studio-code/resources/app/extensions/git/out/main
+[2018-04-14 16:10:14.637] [exthost1] [info] ExtensionService#_doActivateExtension vscode.merge-conflict {"startup":true,"activationEvent":"*"}
+[2018-04-14 16:10:14.637] [exthost1] [info] ExtensionService#loadCommonJSModule /opt/visual-studio-code/resources/app/extensions/merge-conflict/out/extension
+[2018-04-14 16:10:15.155] [exthost1] [info] eager extensions activated
+[2018-04-14 16:10:15.164] [exthost1] [info] ExtensionService#_doActivateExtension ms-vscode.cpptools {"startup":false,"activationEvent":"onLanguage:c"}
+[2018-04-14 16:10:15.164] [exthost1] [info] ExtensionService#loadCommonJSModule /home/andraz/.vscode/extensions/ms-vscode.cpptools-0.16.1/out/src/main
