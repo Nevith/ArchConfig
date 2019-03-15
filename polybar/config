@@ -1,0 +1,267 @@
+[colors]
+background = #aa333336
+background-alt = #666
+foreground = #ffffff
+foreground-alt = #555
+accent = #ffffff
+
+[bar/top]
+font-0 = "NotoSans-Regular:size=8;0"
+font-1 = "MaterialIcons:size=8;0"
+font-2 = "Misc Termsynu:style=Regular:size=8;0"
+font-3 = "Wuncon Sijisize=8;0"
+font-4 = "Font Awesome 5 Free:style=Regular:size=8;0"
+font-5 = "Font Awesome 5 Free Solid:style=Regular:size=8;0"
+font-6 = "Font Awesome 5 Brands:style=Regular:size=8;0"
+
+monitor = ${env:MONITOR:}
+enable-ipc = true
+width = 100%
+height = 20
+
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+border-bottom = 1
+border-bottom-color = #333
+
+overline-size = 1
+overline-color = ${self.background}
+underline-size = 1
+underline-color = ${self.background}
+
+wm-restack = bspwm
+tray-position = left
+
+spacing = 1
+padding-left = 2
+padding-right = 2
+module-margin-left = 3
+module-margin-right = 3
+
+modules-left = memory cpu i3
+modules-center = xwindow
+modules-right = battery volume wireless-network wired-network clock
+
+
+
+[bar/bottom]
+font-0 = "NotoSans-Regular:size=8;0"
+font-1 = "MaterialIcons:size=8;0"
+font-2 = "Misc Termsynu:style=Regular:size=8;0"
+font-3 = "Wuncon Sijisize=8;0"
+font-4 = "Font Awesome 5 Free:style=Regular:size=8;0"
+font-5 = "Font Awesome 5 Free Solid:style=Regular:size=8;0"
+font-6 = "Font Awesome 5 Brands:style=Regular:size=8;0"
+
+monitor = ${env:MONITOR:}
+enable-ipc = true
+width = 100%
+height = 20
+bottom = true
+
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+border-bottom = 1
+border-bottom-color = #333
+
+overline-size = 1
+overline-color = ${self.background}
+underline-size = 1
+underline-color = ${self.background}
+wm-restack = bspwm
+
+modules-left = i3
+modules-right = clock
+
+
+[module/fs-root]
+type = internal/fs
+mount-0 = /
+label-mounted = %{F#e60053}%percentage_used%%%{F-} used of %mountpoint%
+
+[module/i3]
+type = internal/i3
+format = <label-state> <label-mode>
+# format = <label-mode>
+pin-workspaces = true
+
+# ws-icon-0 = term;
+# ws-icon-1 = web;
+# ws-icon-2 = code;
+# ws-icon-3 = music;
+# ws-icon-4 = irssi;
+# ws-icon-default = 
+
+label-dimmed-underline = ${root.background}
+
+label-focused = %icon%  %name%
+label-focused-foreground = ${colors.foreground}
+label-focused-background = #3f3f3f
+label-focused-underline = #4a80d6
+label-focused-font = 3
+label-focused-padding = 3
+
+label-unfocused = %icon%  %name%
+label-unfocused-foreground = ${colors.foreground}
+label-unfocused-underline = #55ffffff
+label-unfocused-font = 3
+label-unfocused-padding = 3
+
+label-urgent = %icon%  %name%
+label-urgent-foreground = ${colors.foreground}
+label-urgent-background = #000000
+label-urgent-underline = #4a80d6
+label-urgent-font = 3
+label-urgent-padding = 3
+
+label-visible = %icon%  %name%
+label-visible-foreground = ${colors.foreground}
+label-visible-underline = #55ffffff
+label-visible-font = 3
+label-visible-padding = 3
+
+
+[module/cpu]
+type = internal/cpu
+interval = 1.5
+
+format = <label> <ramp-coreload>
+
+label = CPU
+label-font = 3
+label-foreground = ${colors.foreground}
+
+ramp-coreload-0 = █
+ramp-coreload-0-font = 2
+ramp-coreload-0-foreground = #44
+ramp-coreload-1 = █
+ramp-coreload-1-font = 2
+ramp-coreload-1-foreground = #92fc79
+ramp-coreload-2 = █
+ramp-coreload-2-font = 2
+ramp-coreload-2-foreground = #69ff44
+ramp-coreload-3 = █
+ramp-coreload-3-font = 2
+ramp-coreload-3-foreground = #46c128
+ramp-coreload-4 = █
+ramp-coreload-4-font = 2
+ramp-coreload-4-foreground = #b3ff11
+ramp-coreload-5 = █
+ramp-coreload-5-font = 2
+ramp-coreload-5-foreground = #fcd22a
+ramp-coreload-6 = █
+ramp-coreload-6-font = 2
+ramp-coreload-6-foreground = #fc8f29
+ramp-coreload-7 = █
+ramp-coreload-7-font = 2
+ramp-coreload-7-foreground = #fc2929
+
+[module/memory]
+type = internal/memory
+interval = 0.2
+format = <label> <bar-used>
+
+label = RAM
+label-font = 3
+label-foreground = ${colors.foreground}
+
+bar-used-width = 30
+bar-used-gradient = true
+bar-used-foreground-0 = #449f3d
+bar-used-foreground-1 = #2f8419
+bar-used-foreground-2 = #f5a70a
+bar-used-foreground-3 = #ed5456
+bar-used-indicator = █
+bar-used-indicator-font = 2
+bar-used-indicator-foreground = #fff
+bar-used-fill = █
+bar-used-fill-font = 2
+bar-used-empty = █
+bar-used-empty-font =2
+bar-used-empty-foreground = #44
+
+[module/wireless-network]
+type = internal/network
+interface = wlo1
+interval = 2.0
+ping-interval = 10
+
+format-connected = <ramp-signal> <label-connected>
+label-connected = %essid%
+label-disconnected = Wireless disconnected
+label-disconnected-foreground = #66
+
+ramp-signal-0 = 
+ramp-signal-1 = 
+ramp-signal-2 = 
+ramp-signal-3 = 
+ramp-signal-4 = 
+
+animation-packetloss-0 = 
+animation-packetloss-0-foreground = #ffa64c
+animation-packetloss-1 = 
+animation-packetloss-1-foreground = ${bar/top.foreground}
+animation-packetloss-framerate = 500
+
+[module/wired-network]
+type = internal/network
+interface = enp5s0
+interval = 2.0
+
+label-connected =   %local_ip%
+label-disconnected = Ethernet disconnected
+label-disconnected-foreground = #66
+
+[module/clock]
+type = internal/date
+interval = 1
+format-padding = 0
+format-foreground = #fff
+fromat-date-font = 3
+date = %%{F#bb}%d. %m. %Y%%{F-}  %%{F#ee}%H:%M%%{F-}
+
+[module/volume]
+type = internal/pulseaudio
+speaker-mixer = Speaker
+headphone-mixer = Headphone
+headphone-id = 9
+
+format-volume = <ramp-volume> <label-volume>
+
+label-volume = " %percentage%%"
+label-volume-foreground = #ff
+
+format-muted-prefix = ""
+format-muted-foreground = #66
+label-muted = " 0%"
+label-muted-foreground = #99ffffff
+
+ramp-volume-0 = 
+ramp-volume-1 = 
+ramp-volume-2 = 
+ramp-volume-3 = 
+ramp-volume-foreground = #9f78e1
+
+ramp-headphones-0 = 
+ramp-headphones-1 = 
+ramp-headphones-foreground = #9f78e1
+
+[module/battery]
+type = internal/battery
+full-at = 98
+format-charging = %{T4} %{F#0f0} %{F-}%{T-}<label-charging>
+format-discharging = %{T4} %{F#f00} %{F-}<label-discharging>
+format-full = %{T4} %{F#0f0} %{F-}%{T-}<label-full>
+label-charging-font = 1
+label-discharging-font = 1
+
+[module/xwindow]
+type = internal/xwindow
+label-maxlen = 75
+label-foreground = ${colors.foreground}
+
+[settings]
+screenchange-reload = true
+pseudo-transparency = true
