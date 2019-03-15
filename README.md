@@ -1,7 +1,7 @@
 # arch-dotfiles
 Dotfiles for arch linux 
 
-![Screenshot](https://github.com/Nevith/ArchConfig/screenshot.png)
+![Screenshot](https://raw.githubusercontent.com/Nevith/ArchConfig/master/screenshot.png)
 
 ### Symlinks
 * ~/ & /root/:
