@@ -1,5 +1,5 @@
-# arch-dotfiles
-Dotfiles for arch linux 
+# ArchConfig
+Config for arch linux 
 
 ![Screenshot](https://raw.githubusercontent.com/Nevith/ArchConfig/master/screenshot.png)
 
