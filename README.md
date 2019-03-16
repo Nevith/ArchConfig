@@ -13,6 +13,7 @@ Config for arch linux
     * polybar
     * background.png
     * login_background.png
+    * termite
 * /etc/:
     * lightdm
 
