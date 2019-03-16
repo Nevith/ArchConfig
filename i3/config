@@ -68,7 +68,7 @@ font pango:monospace 8
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec --no-startup-id urxvt
+bindsym $mod+Return exec --no-startup-id termite
 #bindsym $mod+Retrun exec i3-sensible-terminal
 
 # kill focused window
