@@ -69,16 +69,18 @@ color3  = #FAC03B
 color11 = #FAC03B
 
 # Blue
-color4  = #0D6678
-color12 = #0D6678
+color4  = #4a80d6
+color12 = #4a80d6
+color6  = #4a80d6
+color14 = #4a80d6
 
 # Purple
 color5  = #8F4673
 color13 = #8F4673
 
 # Teal
-color6  = #8BA59B
-color14 = #8BA59B
+#color6  = #8BA59B
+#color14 = #8BA59B
 
 # Extra colors
 color16 = #FE8625

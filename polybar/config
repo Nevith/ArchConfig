@@ -3,7 +3,7 @@ background = #aa333336
 background-alt = #666
 foreground = #ffffff
 foreground-alt = #555
-accent = #ffffff
+accent = #4a80d6
 
 [bar/top]
 font-0 = "NotoSans-Regular:size=8;0"
@@ -99,7 +99,7 @@ label-dimmed-underline = ${root.background}
 label-focused = %icon%  %name%
 label-focused-foreground = ${colors.foreground}
 label-focused-background = #3f3f3f
-label-focused-underline = #4a80d6
+label-focused-underline = ${colors.accent}
 label-focused-font = 3
 label-focused-padding = 3
 
